@@ -25,3 +25,18 @@ def crear_base_de_datos():
     ''')
     conexion.commit()
     conexion.close()
+
+# Función para guardar personas en la base de datos
+def guardar_persona(nombre, apellido_paterno, apellido_materno, dni, lugar_procedencia):
+    if not verificar_existencia_dni(dni):
+        conexion = sqlite3.connect('nueva_base_de_datos.db')
+        cursor = conexion.cursor()
+        fecha = datetime.now().strftime('%Y-%m-%d')
+        hora = datetime.now().strftime('%H:%M:%S')
+        cursor.execute('''
+            INSERT INTO personas (nombre, apellido_paterno, apellido_materno, dni, lugar_procedencia, fecha, hora) VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (nombre, apellido_paterno, apellido_materno, dni, lugar_procedencia, fecha, hora))
+        conexion.commit()
+        conexion.close()
+    else:
+        messagebox.showerror("Error", "El DNI ya está registrado.")
