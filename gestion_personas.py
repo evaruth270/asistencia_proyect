@@ -75,3 +75,37 @@ def verificar_existencia_dni(dni):
     existe = cursor.fetchone()
     conexion.close()
     return existe is not None
+
+
+
+#yorch debe continuar...
+
+
+
+
+
+
+
+
+# Función para mostrar los datos consultados y permitir guardar
+def consultar_y_mostrar_datos():
+    dni = dni_entry.get()
+    if not dni or len(dni) != 8 or not dni.isdigit():
+        messagebox.showerror("Error", "Ingrese un DNI válido de 8 dígitos.")
+        return
+
+    if verificar_existencia_dni(dni):
+        messagebox.showerror("Error", "El DNI ya está registrado.")
+        return
+
+    global datos_persona
+    datos_persona = consultar_persona_por_dni(dni)
+    if datos_persona:
+        nombre, apellido_paterno, apellido_materno, dni, lugar_procedencia = datos_persona
+        info = f"Nombre Completo: {nombre} {apellido_paterno} {apellido_materno}\nDNI: {dni}\nLugar de Procedencia: {lugar_procedencia}"
+        datos_consultados_label.config(text=info)
+        boton_guardar.config(state=tk.NORMAL)  # Habilitar el botón de guardar
+    else:
+        datos_consultados_label.config(text="No se pudo obtener datos de la persona. Ingrese los datos manualmente.")
+        abrir_formulario_manual(dni)
+        boton_guardar.config(state=tk.DISABLED)  # Deshabilitar el botón de guardar
