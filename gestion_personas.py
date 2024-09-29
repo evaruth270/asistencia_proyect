@@ -76,6 +76,7 @@ def verificar_existencia_dni(dni):
     conexion.close()
     return existe is not None
 
+<<<<<<< HEAD
 
 
 #yorch debe continuar...
@@ -217,4 +218,30 @@ def cargar_datos_desde_excel():
             preview_window.destroy()
 
         ttk.Button(preview_window, text="Guardar Datos", command=guardar_datos_excel).pack(pady=10)
+=======
+# Función para consultar datos de la API de apis.net.pe
+def consultar_persona_por_dni(dni):
+    url = f"https://api.apis.net.pe/v1/dni?numero={dni}"
+    headers = {
+        'Authorization': 'Bearer TU_TOKEN_DE_ACCESO'  # Reemplaza 'TU_TOKEN_DE_ACCESO' con tu token real
+    }
+
+    try:
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+            if 'nombres' in data and 'apellidoPaterno' in data and 'apellidoMaterno' in data:
+                nombre = data['nombres']
+                apellido_paterno = data['apellidoPaterno']
+                apellido_materno = data['apellidoMaterno']
+                lugar_procedencia = 'No disponible'  # Puedes ajustar esto si la API proporciona esta información
+                return (nombre, apellido_paterno, apellido_materno, dni, lugar_procedencia)
+            else:
+                return None
+        else:
+            return None
+    except Exception as e:
+        messagebox.showerror("Error", f"Error al acceder a la API: {e}")
+        return None
+>>>>>>> 0423ee52946298d6e26ddadc75ca76c0bfee7c7d
 
