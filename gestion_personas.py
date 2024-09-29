@@ -188,3 +188,33 @@ def generar_reporte(tipo):
 
     ttk.Button(reporte_window, text="Exportar a Excel", command=lambda: exportar_excel(personas, tipo)).pack(side=tk.LEFT, padx=10, pady=10)
     ttk.Button(reporte_window, text="Exportar a PDF", command=lambda: exportar_pdf(personas, tipo)).pack(side=tk.LEFT, padx=10, pady=10)
+
+# Función para cargar datos desde un archivo Excel y mostrar vista previa
+def cargar_datos_desde_excel():
+    archivo = filedialog.askopenfilename(filetypes=[("Archivos de Excel", "*.xlsx")])
+    if archivo:
+        df = pd.read_excel(archivo)
+        preview_window = tk.Toplevel()
+        preview_window.title("Vista Previa de Datos")
+        preview_window.geometry("700x400")
+
+        columns = df.columns.tolist()
+        tree = ttk.Treeview(preview_window, columns=columns, show='headings')
+
+        for col in columns:
+            tree.heading(col, text=col)
+
+        for _, row in df.iterrows():
+            tree.insert("", tk.END, values=row.tolist())
+
+        tree.pack(fill=tk.BOTH, expand=True)
+
+        def guardar_datos_excel():
+            for _, row in df.iterrows():
+                guardar_persona(row['Nombre'], row['Apellido Paterno'], row['Apellido Materno'], row['DNI'], row['Lugar Procedencia'])
+            messagebox.showinfo("Cargar Datos", "Datos cargados exitosamente desde el archivo Excel.")
+            actualizar_lista_personas()
+            preview_window.destroy()
+
+        ttk.Button(preview_window, text="Guardar Datos", command=guardar_datos_excel).pack(pady=10)
+
