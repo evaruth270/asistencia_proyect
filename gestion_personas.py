@@ -66,3 +66,12 @@ def obtener_personas(filtro=None):
     personas = cursor.fetchall()
     conexion.close()
     return personas
+
+# Función para verificar si un DNI ya está registrado en la base de datos
+def verificar_existencia_dni(dni):
+    conexion = sqlite3.connect('nueva_base_de_datos.db')
+    cursor = conexion.cursor()
+    cursor.execute('SELECT * FROM personas WHERE dni = ?', (dni,))
+    existe = cursor.fetchone()
+    conexion.close()
+    return existe is not None
