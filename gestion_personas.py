@@ -121,3 +121,13 @@ def guardar_datos():
         actualizar_lista_personas()
         datos_consultados_label.config(text="")
 
+# Función para actualizar la lista de personas guardadas
+def actualizar_lista_personas():
+    personas = obtener_personas()
+    lista_personas.delete(0, tk.END)
+    if personas:
+        for persona in personas:
+            info = f"ID: {persona[0]} - {persona[1]} {persona[2]} {persona[3]}, DNI: {persona[4]}, {persona[5]}, {persona[6]}, {persona[7]}"
+            lista_personas.insert(tk.END, info)
+    else:
+        lista_personas.insert(tk.END, "No hay personas guardadas.")
