@@ -137,3 +137,18 @@ def exportar_excel(personas, tipo):
     df = pd.DataFrame(personas, columns=["ID", "Nombre", "Apellido Paterno", "Apellido Materno", "DNI", "Lugar Procedencia", "Fecha", "Hora"])
     df.to_excel(f"reporte_{tipo}.xlsx", index=False)
     messagebox.showinfo("Exportar a Excel", f"Reporte {tipo} exportado a Excel exitosamente.")
+
+# Función para exportar datos a PDF
+def exportar_pdf(personas, tipo):
+    c = canvas.Canvas(f"reporte_{tipo}.pdf", pagesize=letter)
+    width, height = letter
+    c.drawString(100, height - 40, f"Reporte {tipo.capitalize()}")
+    c.drawString(100, height - 60, "ID   DNI        Apellido Paterno   Apellido Materno   Nombre   Fecha       Hora")
+
+    y = height - 80
+    for persona in personas:
+        c.drawString(100, y, f"{persona[0]}   {persona[4]}   {persona[2]}   {persona[3]}   {persona[1]}   {persona[6]}   {persona[7]}")
+        y -= 20
+
+    c.save()
+    messagebox.showinfo("Exportar a PDF", f"Reporte {tipo} exportado a PDF exitosamente.")
