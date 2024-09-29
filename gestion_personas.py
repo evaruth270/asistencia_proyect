@@ -109,3 +109,15 @@ def consultar_y_mostrar_datos():
         datos_consultados_label.config(text="No se pudo obtener datos de la persona. Ingrese los datos manualmente.")
         abrir_formulario_manual(dni)
         boton_guardar.config(state=tk.DISABLED)  # Deshabilitar el botón de guardar
+
+# Función para guardar los datos consultados
+def guardar_datos():
+    global datos_persona
+    if datos_persona:
+        nombre, apellido_paterno, apellido_materno, dni, lugar_procedencia = datos_persona
+        guardar_persona(nombre, apellido_paterno, apellido_materno, dni, lugar_procedencia)
+        messagebox.showinfo("Éxito", "Datos guardados correctamente.")
+        boton_guardar.config(state=tk.DISABLED)  # Deshabilitar el botón de guardar
+        actualizar_lista_personas()
+        datos_consultados_label.config(text="")
+
