@@ -55,3 +55,14 @@ def actualizar_persona(id, nombre, apellido_paterno, apellido_materno, dni, luga
     conexion.commit()
     conexion.close()
 
+# Función para buscar personas en la base de datos
+def obtener_personas(filtro=None):
+    conexion = sqlite3.connect('nueva_base_de_datos.db')
+    cursor = conexion.cursor()
+    if filtro:
+        cursor.execute(filtro)
+    else:
+        cursor.execute('SELECT * FROM personas')
+    personas = cursor.fetchall()
+    conexion.close()
+    return personas
