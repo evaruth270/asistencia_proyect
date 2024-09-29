@@ -131,3 +131,9 @@ def actualizar_lista_personas():
             lista_personas.insert(tk.END, info)
     else:
         lista_personas.insert(tk.END, "No hay personas guardadas.")
+
+# Función para exportar datos a Excel
+def exportar_excel(personas, tipo):
+    df = pd.DataFrame(personas, columns=["ID", "Nombre", "Apellido Paterno", "Apellido Materno", "DNI", "Lugar Procedencia", "Fecha", "Hora"])
+    df.to_excel(f"reporte_{tipo}.xlsx", index=False)
+    messagebox.showinfo("Exportar a Excel", f"Reporte {tipo} exportado a Excel exitosamente.")
