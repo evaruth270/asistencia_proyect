@@ -152,3 +152,39 @@ def exportar_pdf(personas, tipo):
 
     c.save()
     messagebox.showinfo("Exportar a PDF", f"Reporte {tipo} exportado a PDF exitosamente.")
+
+# Función para generar reportes
+def generar_reporte(tipo):
+    hoy = datetime.now().date()
+    filtro = ""
+    if tipo == "diario":
+        filtro = f"SELECT * FROM personas WHERE fecha = '{hoy}'"
+    elif tipo == "semanal":
+        inicio_semana = hoy - timedelta(days=hoy.weekday())
+        filtro = f"SELECT * FROM personas WHERE fecha BETWEEN '{inicio_semana}' AND '{hoy}'"
+    elif tipo == "mensual":
+        inicio_mes = hoy.replace(day=1)
+        filtro = f"SELECT * FROM personas WHERE fecha BETWEEN '{inicio_mes}' AND '{hoy}'"
+
+    personas = obtener_personas(filtro)
+    reporte_window = tk.Toplevel()
+    reporte_window.title(f"Reporte {tipo.capitalize()}")
+    reporte_window.geometry("700x400")
+
+    columns = ("ID", "DNI", "Apellido Paterno", "Apellido Materno", "Nombre", "Fecha", "Hora")
+    tree = ttk.Treeview(reporte_window, columns=columns, show='headings')
+    tree.heading("ID", text="ID")
+    tree.heading("DNI", text="DNI")
+    tree.heading("Apellido Paterno", text="Apellido Paterno")
+    tree.heading("Apellido Materno", text="Apellido Materno")
+    tree.heading("Nombre", text="Nombre")
+    tree.heading("Fecha", text="Fecha")
+    tree.heading("Hora", text="Hora")
+
+    for persona in personas:
+        tree.insert("", tk.END, values=(persona[0], persona[4], persona[2], persona[3], persona[1], persona[6], persona[7]))
+
+    tree.pack(fill=tk.BOTH, expand=True)
+
+    ttk.Button(reporte_window, text="Exportar a Excel", command=lambda: exportar_excel(personas, tipo)).pack(side=tk.LEFT, padx=10, pady=10)
+    ttk.Button(reporte_window, text="Exportar a PDF", command=lambda: exportar_pdf(personas, tipo)).pack(side=tk.LEFT, padx=10, pady=10)
