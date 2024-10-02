@@ -418,3 +418,51 @@ def aplicar_estilo_boton(boton, color1, color2):
         b = int(b1 + (b_ratio * i))
         color = f'#{r:04x}{g:04x}{b:04x}'
         image.put(color, to=(0, i * height // steps, width, (i + 1) * height // steps))
+
+# Función para mostrar la pantalla de registro de asistencia
+def mostrar_pantalla_registro_asistencia():
+    global boton_guardar, dni_entry, datos_consultados_label, lista_personas
+
+    root = tk.Toplevel()
+    root.title("Registro de Asistencia")
+    root.geometry("600x600")
+
+    style = ttk.Style()
+    style.configure("TButton", font=("Helvetica", 12, "bold"), padding=10)
+    style.configure("TLabel", font=("Helvetica", 12, "bold"), padding=10)
+    style.configure("TFrame", background="#4a90e2")
+    style.configure("TLabel", background="#4a90e2", foreground="white")
+    style.configure("TButton", background="#007aff", foreground="white")
+    style.map("TButton", background=[('active', '#005bb5')])
+
+    aplicar_fondo_degradado(root, (58, 123, 213), (58, 213, 162))
+
+    ttk.Label(root, text="Registro de Asistencia", font=("Helvetica", 16, "bold"), foreground="white", background="#4a90e2").pack(pady=10)
+
+    frame_dni = ttk.Frame(root)
+    frame_dni.pack(pady=5)
+    ttk.Label(frame_dni, text="DNI", background="#4a90e2", foreground="white").pack(side=tk.LEFT, padx=5)
+    dni_entry = ttk.Entry(frame_dni)
+    dni_entry.pack(side=tk.LEFT, padx=5)
+    boton_buscar = ttk.Button(frame_dni, text="Buscar", command=consultar_y_mostrar_datos)
+    boton_buscar.pack(side=tk.LEFT, padx=5)
+
+    datos_consultados_label = ttk.Label(root, text="", font=("Helvetica", 12, "bold"), foreground="white", background="#4a90e2")
+    datos_consultados_label.pack(pady=10)
+
+    boton_guardar = ttk.Button(root, text="Registrar", command=guardar_datos, state=tk.DISABLED)
+    boton_guardar.pack(fill=tk.X, padx=20, pady=10)
+    boton_mostrar = ttk.Button(root, text="Mostrar Personas Guardadas", command=actualizar_lista_personas)
+    boton_mostrar.pack(fill=tk.X, padx=20, pady=10)
+
+    lista_personas = tk.Listbox(root, height=10, font=("Helvetica", 12, "bold"))
+    lista_personas.pack(fill=tk.BOTH, padx=20, pady=10, expand=True)
+
+    boton_editar = ttk.Button(root, text="Editar Persona", command=editar_registro)
+    boton_editar.pack(fill=tk.X, padx=20, pady=10)
+    boton_salir = ttk.Button(root, text="Salir", command=root.destroy)
+    boton_salir.pack(fill=tk.X, padx=20, pady=10)
+
+    # Actualizar lista al inicio y cada 5 segundos
+    actualizar_lista_personas()
+    root.after(5000, actualizar_lista_personas)
