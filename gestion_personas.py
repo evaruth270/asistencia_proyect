@@ -466,3 +466,33 @@ def mostrar_pantalla_registro_asistencia():
     # Actualizar lista al inicio y cada 5 segundos
     actualizar_lista_personas()
     root.after(5000, actualizar_lista_personas)
+
+# Función para la pantalla inicial
+def pantalla_inicial():
+    root = ThemedTk(theme="arc")
+    root.title("Sistema de Registro de Asistencia")
+    root.geometry("600x400")
+
+    style = ttk.Style()
+    style.configure("TButton", font=("Helvetica", 12, "bold"), padding=10)
+    style.configure("TLabel", font=("Helvetica", 12, "bold"), padding=10)
+    style.configure("TFrame", background="#4a90e2")
+    style.configure("TLabel", background="#4a90e2", foreground="white")
+    style.configure("TButton", background="#007aff", foreground="white")
+    style.map("TButton", background=[('active', '#005bb5')])
+
+    aplicar_fondo_degradado(root, (58, 123, 213), (58, 213, 162))
+
+    ttk.Label(root, text="Sistema de Registro de Asistencia", font=("Helvetica", 16, "bold"), foreground="white", background="#4a90e2").pack(pady=20)
+
+    boton_admin = ttk.Button(root, text="Administrador", command=mostrar_login_administrador)
+    boton_admin.pack(fill=tk.X, padx=20, pady=10)
+    aplicar_estilo_boton(boton_admin, "#ff7f50", "#ff4500")
+
+    boton_registro = ttk.Button(root, text="Registro de Asistencia", command=mostrar_pantalla_registro_asistencia)
+    boton_registro.pack(fill=tk.X, padx=20, pady=10)
+    aplicar_estilo_boton(boton_registro, "#7fffd4", "#40e0d0")
+
+    boton_salir = ttk.Button(root, text="Salir", command=root.destroy)
+    boton_salir.pack(fill=tk.X, padx=20, pady=10)
+    aplicar_estilo_boton(boton_salir, "#ff7f50", "#ff4500")
