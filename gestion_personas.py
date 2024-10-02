@@ -343,4 +343,17 @@ def editar_registro():
 
     ttk.Button(edit_window, text="Guardar", command=guardar_datos_editados).pack(pady=20)
 
+# Función para mostrar la pantalla de administrador
+def mostrar_pantalla_administrador():
+    admin_window = tk.Toplevel()
+    admin_window.title("Administrador")
 
+    menubar = tk.Menu(admin_window)
+    report_menu = tk.Menu(menubar, tearoff=0)
+    report_menu.add_command(label="Reportes Diarios", command=lambda: generar_reporte("diario"))
+    report_menu.add_command(label="Reportes Semanales", command=lambda: generar_reporte("semanal"))
+    report_menu.add_command(label="Reportes Mensuales", command=lambda: generar_reporte("mensual"))
+    menubar.add_cascade(label="Reportes", menu=report_menu)
+    menubar.add_command(label="Cargar Datos", command=cargar_datos_desde_excel)
+    menubar.add_command(label="Salir", command=admin_window.destroy)
+    admin_window.config(menu=menubar)
