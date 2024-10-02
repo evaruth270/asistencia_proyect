@@ -397,3 +397,24 @@ def aplicar_fondo_degradado(widget, color1, color2):
     bg_label = tk.Label(widget, image=bg_image)
     bg_label.image = bg_image
     bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+# Función para aplicar estilo de degradado a los botones
+def aplicar_estilo_boton(boton, color1, color2):
+    steps = 100
+    width = boton.winfo_width()
+    height = boton.winfo_height()
+    image = tk.PhotoImage(width=width, height=height)
+    boton.config(image=image, compound='center')
+
+    r1, g1, b1 = boton.winfo_rgb(color1)
+    r2, g2, b2 = boton.winfo_rgb(color2)
+    r_ratio = (r2 - r1) / steps
+    g_ratio = (g2 - g1) / steps
+    b_ratio = (b2 - b1) / steps
+
+    for i in range(steps):
+        r = int(r1 + (r_ratio * i))
+        g = int(g1 + (g_ratio * i))
+        b = int(b1 + (b_ratio * i))
+        color = f'#{r:04x}{g:04x}{b:04x}'
+        image.put(color, to=(0, i * height // steps, width, (i + 1) * height // steps))
