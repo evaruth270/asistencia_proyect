@@ -84,6 +84,22 @@ def verificar_existencia_dni(dni):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Función para mostrar los datos consultados y permitir guardar
 def consultar_y_mostrar_datos():
     dni = dni_entry.get()
@@ -117,6 +133,57 @@ def guardar_datos():
         boton_guardar.config(state=tk.DISABLED)  # Deshabilitar el botón de guardar
         actualizar_lista_personas()
         datos_consultados_label.config(text="")
+        
+        
+# Función para abrir el formulario manual
+def abrir_formulario_manual(dni):
+    if verificar_existencia_dni(dni):
+        messagebox.showerror("Error", "El DNI ya está registrado.")
+        return
+
+    formulario_window = tk.Toplevel()
+    formulario_window.title("Formulario Manual")
+    formulario_window.geometry("400x400")
+
+    ttk.Label(formulario_window, text="DNI").pack(pady=5)
+    dni_entry_manual = ttk.Entry(formulario_window)
+    dni_entry_manual.pack(pady=5)
+    dni_entry_manual.insert(0, dni)
+    dni_entry_manual.config(state='disabled')
+
+    ttk.Label(formulario_window, text="Apellido Paterno").pack(pady=5)
+    apellido_paterno_entry_manual = ttk.Entry(formulario_window)
+    apellido_paterno_entry_manual.pack(pady=5)
+
+    ttk.Label(formulario_window, text="Apellido Materno").pack(pady=5)
+    apellido_materno_entry_manual = ttk.Entry(formulario_window)
+    apellido_materno_entry_manual.pack(pady=5)
+
+    ttk.Label(formulario_window, text="Nombre").pack(pady=5)
+    nombre_entry_manual = ttk.Entry(formulario_window)
+    nombre_entry_manual.pack(pady=5)
+
+    ttk.Label(formulario_window, text="Lugar de Procedencia").pack(pady=5)
+    lugar_procedencia_entry_manual = ttk.Entry(formulario_window)
+    lugar_procedencia_entry_manual.pack(pady=5)
+
+    def guardar_datos_manual():
+        nombre = nombre_entry_manual.get()
+        apellido_paterno = apellido_paterno_entry_manual.get()
+        apellido_materno = apellido_materno_entry_manual.get()
+        lugar_procedencia = lugar_procedencia_entry_manual.get()
+
+        if not nombre or not apellido_paterno or not apellido_materno:
+            messagebox.showerror("Error", "Todos los campos son obligatorios.")
+            return
+
+        guardar_persona(nombre, apellido_paterno, apellido_materno, dni, lugar_procedencia)
+        messagebox.showinfo("Éxito", "Datos guardados correctamente.")
+        formulario_window.destroy()
+        actualizar_lista_personas()
+
+    ttk.Button(formulario_window, text="Guardar", command=guardar_datos_manual).pack(pady=20)
+
 
 # Función para actualizar la lista de personas guardadas
 def actualizar_lista_personas():
@@ -214,6 +281,64 @@ def cargar_datos_desde_excel():
             preview_window.destroy()
 
         ttk.Button(preview_window, text="Guardar Datos", command=guardar_datos_excel).pack(pady=10)
-=======
+
+# Función para editar un registro existente
+def editar_registro():
+    selected_item = lista_personas.curselection()
+    if not selected_item:
+        messagebox.showerror("Error", "Seleccione un registro para editar.")
+        return
+
+    index = selected_item[0]
+    item = lista_personas.get(index)
+    parts = item.split(" - ")
+    id = parts[0].split(": ")[1]
+    nombre, apellido_paterno, apellido_materno, dni, lugar_procedencia, fecha, hora = parts[1].split(", ")
+
+    edit_window = tk.Toplevel()
+    edit_window.title("Editar Registro")
+
+    ttk.Label(edit_window, text="DNI").pack(pady=5)
+    dni_entry_edit = ttk.Entry(edit_window)
+    dni_entry_edit.pack(pady=5)
+    dni_entry_edit.insert(0, dni)
+    dni_entry_edit.config(state='disabled')
+
+    ttk.Label(edit_window, text="Apellido Paterno").pack(pady=5)
+    apellido_paterno_entry_edit = ttk.Entry(edit_window)
+    apellido_paterno_entry_edit.pack(pady=5)
+    apellido_paterno_entry_edit.insert(0, apellido_paterno)
+
+    ttk.Label(edit_window, text="Apellido Materno").pack(pady=5)
+    apellido_materno_entry_edit = ttk.Entry(edit_window)
+    apellido_materno_entry_edit.pack(pady=5)
+    apellido_materno_entry_edit.insert(0, apellido_materno)
+
+    ttk.Label(edit_window, text="Nombre").pack(pady=5)
+    nombre_entry_edit = ttk.Entry(edit_window)
+    nombre_entry_edit.pack(pady=5)
+    nombre_entry_edit.insert(0, nombre)
+
+    ttk.Label(edit_window, text="Lugar de Procedencia").pack(pady=5)
+    lugar_procedencia_entry_edit = ttk.Entry(edit_window)
+    lugar_procedencia_entry_edit.pack(pady=5)
+    lugar_procedencia_entry_edit.insert(0, lugar_procedencia)
+
+    def guardar_datos_editados():
+        nombre = nombre_entry_edit.get()
+        apellido_paterno = apellido_paterno_entry_edit.get()
+        apellido_materno = apellido_materno_entry_edit.get()
+        lugar_procedencia = lugar_procedencia_entry_edit.get()
+
+        if not nombre or not apellido_paterno or not apellido_materno:
+            messagebox.showerror("Error", "Todos los campos son obligatorios.")
+            return
+
+        actualizar_persona(id, nombre, apellido_paterno, apellido_materno, dni, lugar_procedencia)
+        messagebox.showinfo("Éxito", "Datos actualizados correctamente.")
+        edit_window.destroy()
+        actualizar_lista_personas()
+
+    ttk.Button(edit_window, text="Guardar", command=guardar_datos_editados).pack(pady=20)
 
 
