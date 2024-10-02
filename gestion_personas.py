@@ -364,3 +364,18 @@ def validar_login(usuario, contrasena):
         mostrar_pantalla_administrador()
     else:
         messagebox.showerror("Error", "Usuario o contraseña incorrectos.")
+
+# Función para mostrar la pantalla de login del administrador
+def mostrar_login_administrador():
+    login_window = tk.Toplevel()
+    login_window.title("Login Administrador")
+
+    ttk.Label(login_window, text="Usuario").pack(pady=5)
+    usuario_entry = ttk.Entry(login_window)
+    usuario_entry.pack(pady=5)
+
+    ttk.Label(login_window, text="Contraseña").pack(pady=5)
+    contrasena_entry = ttk.Entry(login_window, show="*")
+    contrasena_entry.pack(pady=5)
+
+    ttk.Button(login_window, text="Login", command=lambda: validar_login(usuario_entry.get(), contrasena_entry.get())).pack(pady=20)
