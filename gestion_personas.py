@@ -496,3 +496,26 @@ def pantalla_inicial():
     boton_salir = ttk.Button(root, text="Salir", command=root.destroy)
     boton_salir.pack(fill=tk.X, padx=20, pady=10)
     aplicar_estilo_boton(boton_salir, "#ff7f50", "#ff4500")
+
+# Añadir opción de modo oscuro
+    modo_oscuro = tk.IntVar()
+    def cambiar_tema():
+        if modo_oscuro.get():
+            root.set_theme("equilux")
+            style.configure("TButton", background="#333333", foreground="white")
+            style.configure("TLabel", background="#333333", foreground="white")
+            style.configure("TFrame", background="#333333")
+        else:
+            root.set_theme("arc")
+            style.configure("TButton", background="#007aff", foreground="white")
+            style.configure("TLabel", background="#4a90e2", foreground="white")
+            style.configure("TFrame", background="#4a90e2")
+
+    ttk.Checkbutton(root, text="Modo Oscuro", variable=modo_oscuro, command=cambiar_tema).pack(pady=10)
+
+    root.mainloop()
+
+if __name__ == "__main__":
+    crear_base_de_datos()
+    pantalla_inicial()
+    
