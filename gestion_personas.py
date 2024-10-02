@@ -379,3 +379,21 @@ def mostrar_login_administrador():
     contrasena_entry.pack(pady=5)
 
     ttk.Button(login_window, text="Login", command=lambda: validar_login(usuario_entry.get(), contrasena_entry.get())).pack(pady=20)
+
+# Función para aplicar fondo degradado a las ventanas
+def aplicar_fondo_degradado(widget, color1, color2):
+    width = widget.winfo_screenwidth()
+    height = widget.winfo_screenheight()
+    image = Image.new('RGB', (width, height), color1)
+    for y in range(height):
+        r, g, b = (
+            int(color1[0] + (color2[0] - color1[0]) * y / height),
+            int(color1[1] + (color2[1] - color1[1]) * y / height),
+            int(color1[2] + (color2[2] - color1[2]) * y / height)
+        )
+        for x in range(width):
+            image.putpixel((x, y), (r, g, b))
+    bg_image = ImageTk.PhotoImage(image)
+    bg_label = tk.Label(widget, image=bg_image)
+    bg_label.image = bg_image
+    bg_label.place(x=0, y=0, relwidth=1, relheight=1)
