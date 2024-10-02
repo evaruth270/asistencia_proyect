@@ -357,3 +357,10 @@ def mostrar_pantalla_administrador():
     menubar.add_command(label="Cargar Datos", command=cargar_datos_desde_excel)
     menubar.add_command(label="Salir", command=admin_window.destroy)
     admin_window.config(menu=menubar)
+
+# Función para validar el login del administrador
+def validar_login(usuario, contrasena):
+    if usuario == "yorchflrs" and contrasena == "george777":
+        mostrar_pantalla_administrador()
+    else:
+        messagebox.showerror("Error", "Usuario o contraseña incorrectos.")
